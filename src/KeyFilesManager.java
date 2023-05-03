@@ -9,7 +9,7 @@ import java.io.IOException;
 public class KeyFilesManager {
 	
 	public static String nameToFilename(String name) {
-		return "pbControls/" + name + ".pbc";
+		return name + ".pbc";
 	}
 	
     public static void saveControls(int[] arr, String fileName) {

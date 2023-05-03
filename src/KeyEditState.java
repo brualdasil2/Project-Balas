@@ -3,16 +3,17 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFileChooser;
+
 public class KeyEditState extends State {
 	
-	private Button backButton;// p1saveButton;
+	private Button backButton, p1saveButton, p1loadButton;
 	
 	private static boolean rendered;
 	
 	private static KeyEditButton p1leftButton, p1rightButton, p1upButton, p1shieldButton, p1jumpButton, p1attackButton, p1specialButton, p1airdashButton,
 	p2leftButton, p2rightButton, p2upButton, p2shieldButton, p2jumpButton, p2attackButton, p2specialButton, p2airdashButton,
 	pauseButton;
-	
 	
 
 	
@@ -47,7 +48,8 @@ public class KeyEditState extends State {
 
 
 		backButton = new Button(game, 0, 0, 100, 50, Color.black, "<- VOLTAR", Assets.font15, null, false);
-		//p1saveButton = new Button(game, 0, 670, 100, 50, Color.black, "SALVAR", Assets.font15, null, false);
+		p1saveButton = new Button(game, 0, 670, 100, 50, Color.black, "SALVAR", Assets.font15, null, false);
+		p1loadButton = new Button(game, 200, 670, 100, 50, Color.black, "CARREGAR", Assets.font15, null, false);
 	}
 	
 	
@@ -65,9 +67,9 @@ public class KeyEditState extends State {
 		String fileName = KeyFilesManager.nameToFilename(name);
 		KeyFilesManager.saveControls(controls, fileName);
 	}
-	/*
+	
 	private void readP1Controls(String name) {
-		String fileName = KeyFilesManager.nameToFilename(name);
+		String fileName = name;
 		int controls[] = KeyFilesManager.readControls(fileName);
 		p1leftButton.setKeyCode(controls[0]);
 		p1rightButton.setKeyCode(controls[1]);
@@ -78,7 +80,7 @@ public class KeyEditState extends State {
 		p1specialButton.setKeyCode(controls[6]);
 		p1airdashButton.setKeyCode(controls[7]);
 		rerender();
-	}*/
+	}
 	
 	@Override
 	public void tick() {
@@ -88,9 +90,18 @@ public class KeyEditState extends State {
 			State.setState(game.getMenuState());
 			((MenuState)(game.getMenuState())).init();
 		}
-		//if (p1saveButton.buttonPressed()) {
-		//	saveP1Controls("balas");
-		//}
+		if (p1saveButton.buttonPressed()) {
+			String filePath = FileChooserManager.chooseFile();
+			if (filePath != null) {
+				saveP1Controls(filePath);
+			}
+		}
+		if (p1loadButton.buttonPressed()) {
+			String filePath = FileChooserManager.chooseFile();
+			if (filePath != null) {
+				readP1Controls(filePath);
+			}
+		}
 		
 		
 		
@@ -180,7 +191,9 @@ public class KeyEditState extends State {
 
 			
 			backButton.drawButton(g);
-			//p1saveButton.drawButton(g);
+			p1saveButton.drawButton(g);
+			p1loadButton.drawButton(g);
+			
 			p1leftButton.drawButton(g);
 			p1rightButton.drawButton(g);
 			p1upButton.drawButton(g);
