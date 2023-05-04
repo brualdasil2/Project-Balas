@@ -263,12 +263,12 @@ public abstract class AttackCreator {
 	private static int carolBairDamage = 10;
 	private static int carolFairDamage = 5;
 	private static int carolTipperFairDamage = 7;
-	private static int carolUpAirDamage = 3;
+	private static int carolUpAirDamage = 2;
 	
 	private static int supercarolBairDamage = 15;
 	private static int supercarolFairDamage = 7;
 	private static int supercarolTipperFairDamage = 11;
-	private static int supercarolUpAirDamage = 5;
+	private static int supercarolUpAirDamage = 3;
 	
 	private static int lacerdaJabDamage = 8;
 	private static int lacerdaDashDamage = 12;
