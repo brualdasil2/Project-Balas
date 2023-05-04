@@ -7,7 +7,7 @@ import javax.swing.JFileChooser;
 
 public class KeyEditState extends State {
 	
-	private Button backButton, p1saveButton, p1loadButton;
+	private Button backButton, p1saveButton, p1loadButton, p2saveButton, p2loadButton;
 	
 	private static boolean rendered;
 	
@@ -48,8 +48,10 @@ public class KeyEditState extends State {
 
 
 		backButton = new Button(game, 0, 0, 100, 50, Color.black, "<- VOLTAR", Assets.font15, null, false);
-		p1saveButton = new Button(game, 0, 670, 100, 50, Color.black, "SALVAR", Assets.font15, null, false);
-		p1loadButton = new Button(game, 200, 670, 100, 50, Color.black, "CARREGAR", Assets.font15, null, false);
+		p1saveButton = new Button(game, 265, 100, 75, 30, Color.black, "SALVAR", Assets.font10, null, false);
+		p1loadButton = new Button(game, 360, 100, 75, 30, Color.black, "CARREGAR", Assets.font10, null, false);
+		p2saveButton = new Button(game, 855, 100, 75, 30, Color.black, "SALVAR", Assets.font10, null, false);
+		p2loadButton = new Button(game, 855+75+20, 100, 75, 30, Color.black, "CARREGAR", Assets.font10, null, false);
 	}
 	
 	
@@ -67,6 +69,20 @@ public class KeyEditState extends State {
 		String fileName = KeyFilesManager.nameToFilename(name);
 		KeyFilesManager.saveControls(controls, fileName);
 	}
+	private void saveP2Controls(String name) {
+		int[] controls = {
+				 p2leftButton.getKeyCode(),
+				 p2rightButton.getKeyCode(),
+				 p2upButton.getKeyCode(),
+				 p2shieldButton.getKeyCode(),
+				 p2jumpButton.getKeyCode(),
+				 p2attackButton.getKeyCode(),
+				 p2specialButton.getKeyCode(),
+				 p2airdashButton.getKeyCode()
+		};
+		String fileName = KeyFilesManager.nameToFilename(name);
+		KeyFilesManager.saveControls(controls, fileName);
+	}
 	
 	private void readP1Controls(String name) {
 		String fileName = name;
@@ -79,6 +95,20 @@ public class KeyEditState extends State {
 		p1attackButton.setKeyCode(controls[5]);
 		p1specialButton.setKeyCode(controls[6]);
 		p1airdashButton.setKeyCode(controls[7]);
+		rerender();
+	}
+	
+	private void readP2Controls(String name) {
+		String fileName = name;
+		int controls[] = KeyFilesManager.readControls(fileName);
+		p2leftButton.setKeyCode(controls[0]);
+		p2rightButton.setKeyCode(controls[1]);
+		p2upButton.setKeyCode(controls[2]);
+		p2shieldButton.setKeyCode(controls[3]);
+		p2jumpButton.setKeyCode(controls[4]);
+		p2attackButton.setKeyCode(controls[5]);
+		p2specialButton.setKeyCode(controls[6]);
+		p2airdashButton.setKeyCode(controls[7]);
 		rerender();
 	}
 	
@@ -100,6 +130,18 @@ public class KeyEditState extends State {
 			String filePath = FileChooserManager.chooseFile();
 			if (filePath != null) {
 				readP1Controls(filePath);
+			}
+		}
+		if (p2saveButton.buttonPressed()) {
+			String filePath = FileChooserManager.chooseFile();
+			if (filePath != null) {
+				saveP2Controls(filePath);
+			}
+		}
+		if (p2loadButton.buttonPressed()) {
+			String filePath = FileChooserManager.chooseFile();
+			if (filePath != null) {
+				readP2Controls(filePath);
 			}
 		}
 		
@@ -193,6 +235,8 @@ public class KeyEditState extends State {
 			backButton.drawButton(g);
 			p1saveButton.drawButton(g);
 			p1loadButton.drawButton(g);
+			p2saveButton.drawButton(g);
+			p2loadButton.drawButton(g);
 			
 			p1leftButton.drawButton(g);
 			p1rightButton.drawButton(g);
