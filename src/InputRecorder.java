@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.Buffer;
 
 public class InputRecorder {
 	private Game game;
@@ -27,7 +28,7 @@ public class InputRecorder {
 	private long bytesToLong(byte[] bytes) {
 	    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
 	    buffer.put(bytes);
-	    buffer.flip();//need flip 
+	    ((Buffer) buffer).flip();//need flip 
 	    return buffer.getLong();
 	}
 	
