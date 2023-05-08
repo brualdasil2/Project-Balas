@@ -171,7 +171,13 @@ public class GameState extends State {
 		}
 		if (mode == 5) {
 			playingReplay = true;
-			inputRecorder.startPlaying();
+			String replayFilePath = FileChooserManager.chooseReplayFile();
+			if (replayFilePath == null) {
+				State.setState(game.getMenuState());
+				((MenuState)(game.getMenuState())).init();
+				return;
+			}
+			inputRecorder.startPlaying(replayFilePath);
 			player1 = new SmashPlayer(game, 1, inputRecorder.getP1Character(), 240, floorY - 200, "JOGADOR 1");
 			player2 = new SmashPlayer(game, 2, inputRecorder.getP2Character(), 840, floorY - 200, "JOGADOR 2");
 			this.map = inputRecorder.getGameMap();

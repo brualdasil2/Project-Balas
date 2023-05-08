@@ -6,11 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.nio.Buffer;
 
 public class InputRecorder {
 	private Game game;
-	private String fileName = "replays/lastReplay.pbr";
 	private byte[] gameInputs;
 	private int currentIndex = 0;
 	private byte[] p1InputsArray;
@@ -18,6 +19,13 @@ public class InputRecorder {
 	private long randomSeed;
 	private Character p1Character, p2Character;
 	private int gameMap;
+	
+	private String generateDateFileName() {
+		LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+        String formattedDateTime = now.format(formatter);
+        return "./replays/" + formattedDateTime + ".pbr";
+	}
 	
 	private byte[] longToBytes(long x) {
 	    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
@@ -86,6 +94,7 @@ public class InputRecorder {
 	}
 	
 	public void stopRecording(Character p1Char, Character p2Char, int map) {
+		String fileName = generateDateFileName();
 		File file = new File(fileName);
 		file.getParentFile().mkdirs();
 		try {
@@ -114,7 +123,7 @@ public class InputRecorder {
 
 	}
 	
-	public void startPlaying() {
+	public void startPlaying(String fileName) {
 		gameInputs = new byte[1000000];
 		currentIndex = 0;
 		try {
