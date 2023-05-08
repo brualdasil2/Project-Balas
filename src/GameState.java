@@ -391,11 +391,11 @@ public class GameState extends State {
 							player1.getReplayInput(frameInputs[0]);
 							player2.getReplayInput(frameInputs[1]);
 						}
+						player1.tick();
+						player2.tick();
 						if (!training && !playingReplay) {
 							inputRecorder.recordInputs(player1, player2);
 						}
-						player1.tick();
-						player2.tick();
 
 					}
 					else {
