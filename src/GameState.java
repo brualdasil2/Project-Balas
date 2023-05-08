@@ -592,7 +592,7 @@ public class GameState extends State {
 								if (botEscapeButton.buttonPressed()) {
 									screenRefreshManager.setChange(0, 0, 300, 500);
 									botEscape++;
-									if (botEscape > 9) {
+									if (botEscape > 10) {
 										botEscape = 0;
 									}
 									((SmashTrainingBot)(player2)).setEscapeOption(botEscape);
@@ -1237,6 +1237,12 @@ public class GameState extends State {
 								Text.drawString(g, "Airdash Baixo", 140, 340, false, Color.white, Assets.font20);
 							else
 								Text.drawString(g, "Airdash Baixo", 140, 340, false, Color.black, Assets.font20);
+							break;
+						case 10:
+							if (map == 2 || map == 3)
+								Text.drawString(g, "Airdash Lado rand", 140, 340, false, Color.white, Assets.font20);
+							else
+								Text.drawString(g, "Airdash Lado rand", 140, 340, false, Color.black, Assets.font20);
 							break;
 					}
 				}

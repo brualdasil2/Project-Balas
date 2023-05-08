@@ -182,6 +182,14 @@ public class SmashTrainingBot extends SmashPlayer {
 				else if (escapeOption == 9) {
 					mashAdDown();
 				}
+				else if (escapeOption == 10) {
+					if (Math.random() > 0.5) {
+						mashAdRight();
+					}
+					else {
+						mashAdLeft();
+					}
+				}
 			}
 			
 			if (hitstunFrames == 0) {
