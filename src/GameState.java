@@ -26,7 +26,7 @@ public class GameState extends State {
 	private static int parryFreezeCounter = 0;
 	public static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public static MagicBall magicBall;
-	private Button hitboxButton, resetButton, restartButton, speedButton, frameButton, lockShieldButton, saveStateButton, loadStateButton, trainingBotButton, botBehaviorButton, botEscapeButton, botPlayerButton, menuButton, characterButton, resumeButton;
+	private Button hitboxButton, resetButton, restartButton, speedButton, frameButton, lockShieldButton, saveStateButton, loadStateButton, trainingBotButton, botBehaviorButton, botEscapeButton, recordButton, menuButton, characterButton, resumeButton;
 	private boolean showBoxes = false;
 	private boolean paused;
 	private int mode;
@@ -248,6 +248,7 @@ public class GameState extends State {
 			saveStateButton = new Button(game, 1150, 120, 55, 40, Color.darkGray, "SALVAR", Assets.font10, null, true);
 			loadStateButton = new Button(game, 1215, 120, 55, 40, Color.darkGray, "CARREGAR", Assets.font10, null, true);
 			lockShieldButton = new Button(game, 1150, 170, 120, 40, Color.DARK_GRAY, "TRAVAR ESCUDO", Assets.font10, null, true);
+			recordButton = new Button(game, 1150, 370, 120, 40, Color.DARK_GRAY, "GRAVAR", Assets.font10, null, true);
 			percentEditor = new PercentEditor(game);
 			hitsToEscapeEditor = new HitsToEscapeEditor(game);
 			trainingSaveState.saveTrainingState();
@@ -452,6 +453,17 @@ public class GameState extends State {
 							lockShield = !lockShield;
 						}
 						
+						if (recordButton.buttonPressed()) {
+							if (botBehavior == 7) {
+								if (((SmashTrainingBot) player2).isRecording()) {
+									((SmashTrainingBot) player2).stopRecording();
+								}
+								else {
+									((SmashTrainingBot) player2).startRecording();
+								}
+							}
+						}
+						
 						if (speedButton.buttonPressed()) {
 							
 							screenRefreshManager.setChange(130, 120, 100, 60);
@@ -533,10 +545,10 @@ public class GameState extends State {
 									((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char().resetAttackCounters();
 									((SmashTrainingBot)(player2)).setEscapeOption(botEscape);
 								}
-								if (botBehavior <= 6) {
+								if (botBehavior <= 7) {
 									((SmashTrainingBot)(player2)).setBehaviorOption(botBehavior);
 								}
-								else if (botBehavior == 7) {
+								else if (botBehavior == 8) {
 									if (((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char() instanceof Bruno) {
 										player2 = new SmashBrunoBotEasy(game, 2, ((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char(), p2X, p2Y);
 									}
@@ -553,7 +565,7 @@ public class GameState extends State {
 									player1.setOpponent(player2);
 									((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char().resetAttackCounters();
 								}
-								else if (botBehavior == 8) {
+								else if (botBehavior == 9) {
 									if (((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char() instanceof Bruno) {
 										player2 = new SmashBrunoBotMedium(game, 2, ((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char(), p2X, p2Y);
 									}
@@ -570,7 +582,7 @@ public class GameState extends State {
 									player1.setOpponent(player2);
 									((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char().resetAttackCounters();
 								}
-								else if (botBehavior == 9) {
+								else if (botBehavior == 10) {
 									if (((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char() instanceof Bruno) {
 										player2 = new SmashBrunoBotHard(game, 2, ((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char(), p2X, p2Y);
 									}
@@ -588,7 +600,7 @@ public class GameState extends State {
 									((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char().resetAttackCounters();
 								}
 							}
-							if (botBehavior <= 6) {
+							if (botBehavior <= 7) {
 								if (botEscapeButton.buttonPressed()) {
 									screenRefreshManager.setChange(0, 0, 300, 500);
 									botEscape++;
@@ -1100,6 +1112,7 @@ public class GameState extends State {
 			saveStateButton.drawButton(g);
 			loadStateButton.drawButton(g);
 			lockShieldButton.drawButton(g);
+			recordButton.drawButton(g);
 			
 			if (map == 2 || map == 3)
 				Text.drawString(g, "Bot de treino:", 70, 190, true, Color.white, Assets.font20);
@@ -1157,17 +1170,23 @@ public class GameState extends State {
 						break;
 					case 7:
 						if (map == 2 || map == 3)
+							Text.drawString(g, "CUSTOMIZADO", 140, 290, false, Color.white, Assets.font20);
+						else
+							Text.drawString(g, "CUSTOMIZADO", 140, 290, false, Color.black, Assets.font20);
+						break;
+					case 8:
+						if (map == 2 || map == 3)
 							Text.drawString(g, "Bot Fácil", 140, 290, false, Color.white, Assets.font20);
 						else
 							Text.drawString(g, "Bot Fácil", 140, 290, false, Color.black, Assets.font20);
 						break;
-					case 8:
+					case 9:
 						if (map == 2 || map == 3)
 							Text.drawString(g, "Bot Médio", 140, 290, false, Color.white, Assets.font20);
 						else
 							Text.drawString(g, "Bot Médio", 140, 290, false, Color.black, Assets.font20);
 						break;
-					case 9:
+					case 10:
 						if (map == 2 || map == 3)
 							Text.drawString(g, "Bot Difícil", 140, 290, false, Color.white, Assets.font20);
 						else
@@ -1175,7 +1194,7 @@ public class GameState extends State {
 						break;
 				}
 				
-				if (botBehavior <= 6) {
+				if (botBehavior <= 7) {
 					botEscapeButton.drawButton(g);
 					switch (botEscape) {
 						case 0:

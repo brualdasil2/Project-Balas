@@ -8,6 +8,8 @@ public class SmashTrainingBot extends SmashPlayer {
 	private int hitsToEscape = 1, hitsToEscapeCounter = 0, resetHitsEscapeCounter = 0;
 	int prevComboCounter = 0;
 	
+	private TrainingInputRecorder inputRecorder;
+	
 	//private LacerdaCombos combos = new LacerdaCombos(this);
 	
 	public SmashTrainingBot(Game game, int playerNumb, Character character, double x, double y) {
@@ -16,6 +18,7 @@ public class SmashTrainingBot extends SmashPlayer {
 		frameCounter = 0;
 		escapeOption = 0;
 		behaviorOption = 0;
+		inputRecorder = new TrainingInputRecorder();
 	}
 
 		
@@ -233,6 +236,18 @@ public class SmashTrainingBot extends SmashPlayer {
 			else if (behaviorOption == 6) {
 				ijadUpair();
 			}
+			else if (behaviorOption == 7) {
+				if (inputRecorder.isRecording()) {
+					inputRecorder.recordInputs(this);
+				}
+				else {
+					if (inputRecorder.hasRecordingSaved()) {
+						byte frameInputs = inputRecorder.getFrameInputs();
+						getReplayInput(frameInputs);
+						System.out.println(frameInputs);
+					}
+				}
+			}
 		}
 	}
 	
@@ -262,6 +277,7 @@ public class SmashTrainingBot extends SmashPlayer {
 		pressingRight = game.getKeyManager(playerNumb).right;
 		pressingAirdash = game.getKeyManager(playerNumb).airdash;
 		
+		System.out.println("shield: " + pressingShield);
 
 			
 		if (escapeOption > 0) {
@@ -287,6 +303,18 @@ public class SmashTrainingBot extends SmashPlayer {
 	
 	public void setHitsToEscape(int hits) {
 		this.hitsToEscape = hits;
+	}
+	
+	public boolean isRecording() {
+		return inputRecorder.isRecording();
+	}
+	
+	public void stopRecording() {
+		inputRecorder.stopRecording();
+	}
+	
+	public void startRecording() {
+		inputRecorder.startRecording();
 	}
 	
 	
