@@ -10,6 +10,7 @@ public class CharacterSelectState extends State {
 	private int map = -1;
 	private boolean rendered;
 	private InputDelayEditor p1DelayEditor, p2DelayEditor;
+	boolean mapWasRandom = false;
 	
 	
 	
@@ -39,6 +40,9 @@ public class CharacterSelectState extends State {
 		playerChoosing = 1;
 		skinChoice = 0;
 		rendered = false;
+		if (mapWasRandom) {
+			map = -1;
+		}
 	
 	}
 	
@@ -188,8 +192,10 @@ public class CharacterSelectState extends State {
 			
 			if (fightButton.buttonPressed()) {
 				
+				mapWasRandom = false;
 				if (map == -1) {
 					map = (int)(Math.random()*4 + 1);
+					mapWasRandom = true;
 				}
 				
 				State.setState(game.getGameState());
@@ -198,8 +204,10 @@ public class CharacterSelectState extends State {
 			
 			if (trainingButton.buttonPressed()) {
 				
+				mapWasRandom = false;
 				if (map == -1) {
 					map = (int)(Math.random()*4 + 1);
+					mapWasRandom = true;
 				}
 				
 				State.setState(game.getGameState());
@@ -208,8 +216,10 @@ public class CharacterSelectState extends State {
 			
 			if (suddenDeathButton.buttonPressed()) {
 				
+				mapWasRandom = false;
 				if (map == -1) {
 					map = (int)(Math.random()*4 + 1);
+					mapWasRandom = true;
 				}
 				State.setState(game.getGameState());
 				((GameState)(game.getGameState())).init(1, map, true);
