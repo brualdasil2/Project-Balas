@@ -332,6 +332,7 @@ public class Assets {
 	public static BufferedImage[] midDigits = new BufferedImage[11];
 	public static BufferedImage[] highDigits = new BufferedImage[11];
 	public static BufferedImage[] ultraDigits = new BufferedImage[11];
+	public static BufferedImage questionMark;
 	
 
 
@@ -510,7 +511,8 @@ public class Assets {
 		
 		shipSmall = ImageLauncher.loadImage("/textures/ShipSmall.png");
 		
-
+		
+		questionMark = ImageLauncher.loadImage("/textures/QuestionMark.png");
 		
 		
 		font30 = new Font("Times new roman", Font.PLAIN, 30);

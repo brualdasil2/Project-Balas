@@ -5,9 +5,9 @@ public class CharacterSelectState extends State {
 	
 	private int playerChoosing;
 	private Character p1Char, p2Char;
-	private Button brunoButton, carolButton, lacerdaButton, obinoButton, fightButton, trainingButton, suddenDeathButton, backButton, skin0Button, skin1Button, mapLeftButton, mapRightButton;
+	private Button randomCharButton, brunoButton, carolButton, lacerdaButton, obinoButton, fightButton, trainingButton, suddenDeathButton, backButton, skin0Button, skin1Button, mapLeftButton, mapRightButton;
 	private int skinChoice, p1Skin, p2Skin;
-	private int map = 0;
+	private int map = -1;
 	private boolean rendered;
 	private InputDelayEditor p1DelayEditor, p2DelayEditor;
 	
@@ -25,6 +25,7 @@ public class CharacterSelectState extends State {
 		carolButton = new Button(game, 515, 150, 100, 100, null, null, null, null, true);
 		lacerdaButton = new Button(game, 665, 150, 100, 100, null, null, null, null, true);
 		obinoButton = new Button(game, 815, 150, 100, 100, null, null, null, null, true);
+		randomCharButton = new Button(game, 590, 300, 100, 100, null, null, null, null, true);
 		fightButton = new Button(game, 540, 450, 200, 100, Color.black, "LUTAR!", Assets.font30, null, false);
 		trainingButton = new Button(game, 590, 585, 100, 50, Color.black, "TREINAR", Assets.font20, null, false);
 		suddenDeathButton = new Button(game, 565, 670, 150, 30, Color.black, "MORTE SÚBITA", Assets.font15, null, false);
@@ -59,6 +60,24 @@ public class CharacterSelectState extends State {
 				
 				rendered = false;
 				skinChoice = 1;
+			}
+			
+			if (randomCharButton.buttonPressed()) {
+				
+				rendered = false;
+				if (playerChoosing == 1) {
+					
+					p1Char = null;
+					p1Skin = 0;
+					playerChoosing = 2;
+				}
+				
+				else if (playerChoosing == 2) {
+					
+					p2Char = null;
+					p2Skin = 1;
+					playerChoosing = 3;
+				}
 			}
 			
 			if (brunoButton.buttonPressed()) {
@@ -155,7 +174,7 @@ public class CharacterSelectState extends State {
 				
 				rendered = false;
 				map--;
-				if (map < 0)
+				if (map < -1)
 					map = 4;
 			}
 			
@@ -164,10 +183,14 @@ public class CharacterSelectState extends State {
 				rendered = false;
 				map++;
 				if (map > 4)
-					map = 0;
+					map = -1;
 			}
 			
 			if (fightButton.buttonPressed()) {
+				
+				if (map == -1) {
+					map = (int)(Math.random()*4 + 1);
+				}
 				
 				State.setState(game.getGameState());
 				((GameState)(game.getGameState())).init(1, map, false);
@@ -175,12 +198,19 @@ public class CharacterSelectState extends State {
 			
 			if (trainingButton.buttonPressed()) {
 				
+				if (map == -1) {
+					map = (int)(Math.random()*4 + 1);
+				}
+				
 				State.setState(game.getGameState());
 				((GameState)(game.getGameState())).init(2, map, false);
 			}
 			
 			if (suddenDeathButton.buttonPressed()) {
 				
+				if (map == -1) {
+					map = (int)(Math.random()*4 + 1);
+				}
 				State.setState(game.getGameState());
 				((GameState)(game.getGameState())).init(1, map, true);
 			}
@@ -228,6 +258,8 @@ public class CharacterSelectState extends State {
 			
 			if (playerChoosing < 3) {
 				
+				g.drawImage(Assets.questionMark, 590, 300, 100, 100, null);
+				
 				if (skinChoice == 0) {
 
 					
@@ -251,6 +283,7 @@ public class CharacterSelectState extends State {
 				carolButton.drawButton(g);
 				lacerdaButton.drawButton(g);
 				obinoButton.drawButton(g);
+				randomCharButton.drawButton(g);
 				
 
 				
@@ -258,6 +291,7 @@ public class CharacterSelectState extends State {
 				Text.drawString(g, "CAROL", 565, 250 + g.getFontMetrics(Assets.font15).getHeight(), true, Color.black, Assets.font15);
 				Text.drawString(g, "LACERDA", 715, 250 + g.getFontMetrics(Assets.font15).getHeight(), true, Color.black, Assets.font15);
 				Text.drawString(g, "OBINO", 865, 250 + g.getFontMetrics(Assets.font15).getHeight(), true, Color.black, Assets.font15);
+				Text.drawString(g, "ALEATÓRIO", 640, 250+150 + g.getFontMetrics(Assets.font15).getHeight(), true, Color.black, Assets.font15);
 				
 				
 				if (skinChoice == 0) {
@@ -282,7 +316,9 @@ public class CharacterSelectState extends State {
 				
 				if (p1Skin == 0) {
 					
-					if (p1Char instanceof Bruno)
+					if (p1Char == null)
+						g.drawImage(Assets.questionMark, 10, 455, 255, 255, null);
+					else if (p1Char instanceof Bruno)
 						g.drawImage(Assets.bruno0SelectImageRight, 10, 455, 255, 255, null);
 					else if (p1Char instanceof Carol)
 						g.drawImage(Assets.carol0SelectImageRight, 10, 455, 255, 255, null);
@@ -293,7 +329,9 @@ public class CharacterSelectState extends State {
 				}
 				else if (p1Skin == 1) {
 					
-					if (p1Char instanceof Bruno)
+					if (p1Char == null)
+						g.drawImage(Assets.questionMark, 10, 455, 255, 255, null);
+					else if (p1Char instanceof Bruno)
 						g.drawImage(Assets.bruno1SelectImageRight, 10, 455, 255, 255, null);
 					else if (p1Char instanceof Carol)
 						g.drawImage(Assets.carol1SelectImageRight, 10, 455, 255, 255, null);
@@ -314,6 +352,10 @@ public class CharacterSelectState extends State {
 				
 				switch (map) {
 				
+				case -1:
+					g.drawImage(Assets.questionMark, 462+178/2, 100, 200, 200, null);
+					Text.drawString(g, "Aleatório", 640, 320, true, Color.white, Assets.font20);
+					break;
 				case 0: 
 					g.setColor(Color.LIGHT_GRAY);
 					//462, 100, 356, 200
@@ -372,7 +414,9 @@ public class CharacterSelectState extends State {
 				
 				if (p2Skin == 0) {
 					
-					if (p2Char instanceof Bruno)
+					if (p2Char == null)
+						g.drawImage(Assets.questionMark, 1015, 455, 255, 255, null);
+					else if (p2Char instanceof Bruno)
 						g.drawImage(Assets.bruno0SelectImageLeft, 1015, 455, 255, 255, null);
 					else if (p2Char instanceof Carol)
 						g.drawImage(Assets.carol0SelectImageLeft, 1015, 455, 255, 255, null);
@@ -383,7 +427,9 @@ public class CharacterSelectState extends State {
 				}
 				else if (p2Skin == 1) {
 					
-					if (p2Char instanceof Bruno)
+					if (p2Char == null)
+						g.drawImage(Assets.questionMark, 1015, 455, 255, 255, null);
+					else if (p2Char instanceof Bruno)
 						g.drawImage(Assets.bruno1SelectImageLeft, 1015, 455, 255, 255, null);
 					else if (p2Char instanceof Carol)
 						g.drawImage(Assets.carol1SelectImageLeft, 1015, 455, 255, 255, null);
@@ -396,15 +442,32 @@ public class CharacterSelectState extends State {
 		}
 	}
 	
-	
+	private Character randomChar(int skin) {
+		int randNumb = (int)(Math.random()*4);
+		switch(randNumb) {
+			case 0:
+				return new Bruno(skin);
+			case 1:
+				return new Carol(skin);
+			case 2:
+				return new Lacerda(skin);
+			case 3:
+				return new Obino(skin);
+		}
+		return new Bruno(skin);
+	}
 	
 	public Character getPlayer1Char() {
-		
+		if (p1Char == null) {
+			p1Char = randomChar(p1Skin);
+		}
 		return p1Char;
 	}
 	
 	public Character getPlayer2Char() {
-		
+		if (p2Char == null) {
+			p2Char = randomChar(p2Skin);
+		}
 		return p2Char;
 	}
 	
