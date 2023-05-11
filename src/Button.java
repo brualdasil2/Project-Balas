@@ -83,7 +83,9 @@ public class Button {
 		this.c = c;
 	}
 	
-	
+	public void setText(String text) {
+		this.name = text;
+	}
 	
 	
 	

@@ -113,4 +113,8 @@ public class TrainingInputRecorder {
 	public boolean hasRecordingSaved() {
 		return (inputsSize != -1);
 	}
+	
+	public boolean isOnFirstFrame() {
+		return (currentIndex == 0);
+	}
 }

@@ -26,7 +26,7 @@ public class GameState extends State {
 	private static int parryFreezeCounter = 0;
 	public static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public static MagicBall magicBall;
-	private Button hitboxButton, resetButton, restartButton, speedButton, frameButton, lockShieldButton, saveStateButton, loadStateButton, trainingBotButton, botBehaviorButton, botEscapeButton, recordButton, menuButton, characterButton, resumeButton;
+	private Button hitboxButton, resetButton, restartButton, speedButton, frameButton, lockShieldButton, randomTimesButton, saveStateButton, loadStateButton, trainingBotButton, botBehaviorButton, botEscapeButton, recordButton, menuButton, characterButton, resumeButton;
 	private boolean showBoxes = false;
 	private boolean paused;
 	private int mode;
@@ -248,7 +248,8 @@ public class GameState extends State {
 			saveStateButton = new Button(game, 1150, 120, 55, 40, Color.darkGray, "SALVAR", Assets.font10, null, true);
 			loadStateButton = new Button(game, 1215, 120, 55, 40, Color.darkGray, "CARREGAR", Assets.font10, null, true);
 			lockShieldButton = new Button(game, 1150, 170, 120, 40, Color.DARK_GRAY, "TRAVAR ESCUDO", Assets.font10, null, true);
-			recordButton = new Button(game, 1150, 370, 120, 40, Color.DARK_GRAY, "GRAVAR", Assets.font10, null, true);
+			recordButton = new Button(game, 1150, 220, 120, 40, Color.DARK_GRAY, "GRAVAR", Assets.font10, null, true);
+			randomTimesButton = new Button(game, 1150, 270, 120, 40, Color.DARK_GRAY, "INTERVALO", Assets.font10, null, true);
 			percentEditor = new PercentEditor(game);
 			hitsToEscapeEditor = new HitsToEscapeEditor(game);
 			trainingSaveState.saveTrainingState();
@@ -457,10 +458,19 @@ public class GameState extends State {
 							if (botBehavior == 7) {
 								if (((SmashTrainingBot) player2).isRecording()) {
 									((SmashTrainingBot) player2).stopRecording();
+									recordButton.setColor(Color.blue);
 								}
 								else {
 									((SmashTrainingBot) player2).startRecording();
+									recordButton.setColor(Color.green);
 								}
+							}
+						}
+						
+						if (randomTimesButton.buttonPressed()) {
+							if (botBehavior == 7) {
+								((SmashTrainingBot) player2).invertRandomTimes();
+								screenRefreshManager.reset();
 							}
 						}
 						
@@ -534,10 +544,9 @@ public class GameState extends State {
 							if (botBehaviorButton.buttonPressed()) {
 								double p2X = player2.getX();
 								double p2Y = player2.getY();
-								screenRefreshManager.setChange(0, 0, 300, 500);
-								screenRefreshManager.setChange(0, 0, 1280, 30);
+								screenRefreshManager.reset();
 								botBehavior++;
-								if (botBehavior > 9) {
+								if (botBehavior > 10) {
 									botBehavior = 0;
 									player2 = new SmashTrainingBot(game, 2, ((CharacterSelectState)(game.getCharacterSelectState())).getPlayer2Char(), p2X, p2Y);
 									player2.setOpponent(player1);
@@ -1112,7 +1121,12 @@ public class GameState extends State {
 			saveStateButton.drawButton(g);
 			loadStateButton.drawButton(g);
 			lockShieldButton.drawButton(g);
-			recordButton.drawButton(g);
+			if (botBehavior == 7) {
+				recordButton.drawButton(g);
+				randomTimesButton.drawButton(g);
+				String randTimesText = ((SmashTrainingBot) player2).isRandomTimes() ? "Aleatório" : "Constante";
+				Text.drawString(g, randTimesText, 1210, 330, true, Color.black, Assets.font20);
+			}
 			
 			if (map == 2 || map == 3)
 				Text.drawString(g, "Bot de treino:", 70, 190, true, Color.white, Assets.font20);

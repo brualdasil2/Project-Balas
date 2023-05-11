@@ -5,6 +5,9 @@ public class SmashTrainingBot extends SmashPlayer {
 	private boolean opponentNear, opponentOnAir, opponentOnTop, opponentOnLeft, opponentOnRight, opponentAttacking, opponentShielding, opponentCandyComing,
 					onCenter, gotHit = false;
 	
+	private int randWaitFrames = 0;
+	private boolean randomTimes = false;
+	
 	private int hitsToEscape = 1, hitsToEscapeCounter = 0, resetHitsEscapeCounter = 0;
 	int prevComboCounter = 0;
 	
@@ -242,9 +245,18 @@ public class SmashTrainingBot extends SmashPlayer {
 				}
 				else {
 					if (inputRecorder.hasRecordingSaved()) {
-						byte frameInputs = inputRecorder.getFrameInputs();
-						getReplayInput(frameInputs);
-						System.out.println(frameInputs);
+						if (randWaitFrames > 0) {
+							randWaitFrames--;
+						}
+						else {
+							if (inputRecorder.isOnFirstFrame()) {
+								if (randomTimes) {
+									randWaitFrames = (int)(Math.random()*400 + 1);
+								}
+							}
+							byte frameInputs = inputRecorder.getFrameInputs();
+							getReplayInput(frameInputs);
+						}
 					}
 				}
 			}
@@ -317,6 +329,13 @@ public class SmashTrainingBot extends SmashPlayer {
 		inputRecorder.startRecording();
 	}
 	
+	public void invertRandomTimes() {
+		randomTimes = !randomTimes;
+	}
+	
+	public boolean isRandomTimes() {
+		return randomTimes;
+	}
 	
 }
 
