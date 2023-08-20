@@ -43,8 +43,8 @@ public class Lacerda extends Character {
 		parryLeft = AttackCreator.getLacerdaParryLeftFrames(skin);
 		
 		sideSpecialMagic = 3;
-		neutralSpecialMagic = 1;
-		upSpecialMagic = 2;
+		neutralSpecialMagic = 2;
+		upSpecialMagic = 3;
 		
 		jumpSpeed = 17;
 		groundSpeed = 13;
