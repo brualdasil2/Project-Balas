@@ -593,7 +593,7 @@ public class SmashPlayer extends Player {
 						}
 
 						else {
-
+							boolean tankedArmorHit = currentFrame.hasArmor() && opponent.invincibleCounter == 0;
 							if (invincibleCounter == 0) {
 								int damage, ySp, xSp;
 								//System.out.println("NO SP " + wasTipper);
@@ -607,24 +607,27 @@ public class SmashPlayer extends Player {
 									ySp = opponent.getCurrentAttack().getKnockbackYspeed();
 									xSp = opponent.getCurrentAttack().getKnockbackXspeed();
 								}
-								ySpeed = (ySp * knockbackMultiplier()) + ((double)opponent.getCurrentAttack().getBaseKnockbackYspeed()/opponent.character.weight);
-								xSpeed = (xSp * knockbackMultiplier()) + ((double)opponent.getCurrentAttack().getBaseKnockbackXspeed()/opponent.character.weight);
-								int hSf = (int) (opponent.getCurrentAttack().getHitstunFrames() * hitstunMultiplier());
-								hitstunFrames = hSf < MIN_HITSTUN ? MIN_HITSTUN : hSf;
-								freezeFrames = opponent.getCurrentAttack().getFreezeFrames();
+								if (!tankedArmorHit) {
+									
+									ySpeed = (ySp * knockbackMultiplier()) + ((double)opponent.getCurrentAttack().getBaseKnockbackYspeed()/opponent.character.weight);
+									xSpeed = (xSp * knockbackMultiplier()) + ((double)opponent.getCurrentAttack().getBaseKnockbackXspeed()/opponent.character.weight);
+									int hSf = (int) (opponent.getCurrentAttack().getHitstunFrames() * hitstunMultiplier());
+									hitstunFrames = hSf < MIN_HITSTUN ? MIN_HITSTUN : hSf;
+									freezeFrames = opponent.getCurrentAttack().getFreezeFrames();
+									airdashCounter = 0;
+								}
 								percent += damage;
 								health -= damage;
 								shielding = false;
-								airdashCounter = 0;
 								if (simulateKill()) {
 									killEffect(killSparkHurtbox);
 								}
 								else {
 									SoundManager.play("sounds/PunchHit.wav", false);
 								}
+								insideHitbox = true;
 							}
 
-							insideHitbox = true;
 
 						}
 					}
@@ -725,21 +728,23 @@ public class SmashPlayer extends Player {
 										}
 
 										else {
-
+											boolean tankedArmorHit = currentFrame.hasArmor() && opponent.invincibleCounter == 0;
 											if (invincibleCounter == 0) {
-
 												percent += GameState.projectiles.get(i).getDamage();
 												health -= GameState.projectiles.get(i).getDamage();
-												ySpeed = GameState.projectiles.get(i).getKnockbackYspeed()
-														* knockbackMultiplier();
-												xSpeed = knockbackMultiplier()
-														* ((GameState.projectiles.get(i).getXSpeed() > 0)
-																? GameState.projectiles.get(i).getKnockbackXspeed()
-																: -GameState.projectiles.get(i).getKnockbackXspeed());
-												int hSf = (int) (GameState.projectiles.get(i).getHitstunFrames()
-														* hitstunMultiplier());
-												hitstunFrames = hSf < MIN_HITSTUN ? MIN_HITSTUN : hSf;
-												freezeFrames = GameState.projectiles.get(i).getFreezeFrames();
+												if (!tankedArmorHit) {
+													
+													ySpeed = GameState.projectiles.get(i).getKnockbackYspeed()
+															* knockbackMultiplier();
+													xSpeed = knockbackMultiplier()
+															* ((GameState.projectiles.get(i).getXSpeed() > 0)
+																	? GameState.projectiles.get(i).getKnockbackXspeed()
+																	: -GameState.projectiles.get(i).getKnockbackXspeed());
+													int hSf = (int) (GameState.projectiles.get(i).getHitstunFrames()
+															* hitstunMultiplier());
+													hitstunFrames = hSf < MIN_HITSTUN ? MIN_HITSTUN : hSf;
+													freezeFrames = GameState.projectiles.get(i).getFreezeFrames();
+												}
 												
 												
 	

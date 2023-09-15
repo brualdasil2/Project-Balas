@@ -9,7 +9,7 @@ public class AttackFrame {
 	private Counterbox counterboxes[];
 	private int width, height;
 	private int xOffset, yOffset;
-	
+	private boolean armor = false;
 	
 	
 	public AttackFrame(int duration, BufferedImage image, Hurtbox hurtboxes[], Hitbox hitboxes[], int width, int height) {
@@ -24,6 +24,21 @@ public class AttackFrame {
 		this.yOffset = 0;
 		this.counterboxes = null;
 	}
+	
+	public AttackFrame(int duration, BufferedImage image, Hurtbox hurtboxes[], Hitbox hitboxes[], int width, int height, boolean armor) {
+		
+		this.duration = duration;
+		this.image = image;
+		this.hurtboxes = hurtboxes;
+		this.hitboxes = hitboxes;
+		this.width = width;
+		this.height = height;
+		this.xOffset = 0;
+		this.yOffset = 0;
+		this.counterboxes = null;
+		this.armor = armor;
+	}
+	
 	
 	public AttackFrame(int duration, BufferedImage image, Hurtbox hurtboxes[], Hitbox hitboxes[], int width, int height, int xOffset, int yOffset) {
 		
@@ -97,5 +112,9 @@ public class AttackFrame {
 	public int getYOffset() {
 		
 		return yOffset;
+	}
+	
+	public boolean hasArmor() {
+		return armor;
 	}
 }
