@@ -38,7 +38,7 @@ public class Obino extends Character{
 		
 		sideSpecialMagic = 2;
 		neutralSpecialMagic = 3;
-		upSpecialMagic = 2;
+		upSpecialMagic = 1;
 		
 		jumpSpeed = 16;
 		groundSpeed = 6;
