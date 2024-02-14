@@ -16,10 +16,10 @@ public class Bala extends Projectile {
 								 new Hitbox(9, 32, 10)};
 		
 		damage = 15;
-		knockbackXspeed = 10;
-		knockbackYspeed = -10;
+		knockbackXspeed = 13;
+		knockbackYspeed = -12;
 		freezeFrames = 7;
-		hitstunFrames = 20;	
+		hitstunFrames = 23;	
 	}
 	
 	@Override

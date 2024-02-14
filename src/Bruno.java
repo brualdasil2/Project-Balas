@@ -590,9 +590,9 @@ public class Bruno extends Character{
 		
 		if (attackUF == 0) {
 			
-			if (attackIF % 5 == 0 && attackIF <= 50) {
+			if ((attackIF+1) % 5 == 0 && attackIF <= 50+1) {
 				
-				if (attackIF % 10 == 0) {
+				if ((attackIF+1) % 10 == 0) {
 					
 					GameState.projectiles.add(new Halls(player, player.getX() + 84, player.getY() - 20, -2, -15));
 				}
